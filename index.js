@@ -165,41 +165,21 @@ function changeDirection(key) {
 document.addEventListener('keydown', handleInput);
 document.addEventListener('touchstart', handleTouch);
 
-// Swipe gesture variables
-let touchStartX = 0;
-let touchStartY = 0;
-let touchEndX = 0;
-let touchEndY = 0;
-
-document.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
-}, false);
-
-document.addEventListener('touchend', (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    touchEndY = e.changedTouches[0].screenY;
-    handleSwipeGesture();
-}, false);
-
-function handleSwipeGesture() {
-    const diffX = touchEndX - touchStartX;
-    const diffY = touchEndY - touchStartY;
-
-    if (Math.abs(diffX) > Math.abs(diffY)) {
-        if (diffX > 0) {
-            changeDirection('ArrowRight');
-        } else {
-            changeDirection('ArrowLeft');
-        }
-    } else {
-        if (diffY > 0) {
-            changeDirection('ArrowDown');
-        } else {
-            changeDirection('ArrowUp');
-        }
+// Add touch controls for mobile
+const mobileControls = document.getElementById('mobileControls');
+mobileControls.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const button = e.target.closest('button');
+    if (button) {
+        const direction = button.id.replace('Btn', '');
+        changeDirection(`Arrow${direction.charAt(0).toUpperCase() + direction.slice(1)}`);
     }
-}
+});
+
+// Prevent default touch behavior to avoid scrolling while playing
+document.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+}, { passive: false });
 
 draw();
 resizeGame();
