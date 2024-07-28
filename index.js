@@ -183,4 +183,3 @@ document.addEventListener('touchmove', (e) => {
 
 draw();
 resizeGame();
-// 
