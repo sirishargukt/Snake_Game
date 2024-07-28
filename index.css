@@ -4,13 +4,15 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    /* background: url('https://cdn.leonardo.ai/users/1661f459-1b21-478c-9daa-6aa1ef9aac13/generations/2cdfd3dd-ce9c-4300-823e-9242c822ed56/Default_A_nostalgic_snake_gameinspired_laptop_wallpaper_featur_0.jpg') no-repeat center center; */
     background-size: cover;
     background-color: black;
 }
 
 #gameContainer {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #displayCanvas {
@@ -27,17 +29,31 @@ body {
     font-size: 24px;
     color: white;
     text-align: center;
-    z-index: 1; /* Ensure it’s above the canvas */
+    z-index: 1;
 }
 
-#scoreDisplay {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 20px;
-    color: white;
-    text-align: center;
-    z-index: 1; /* Ensure it’s above the canvas */
+#mobileControls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
 }
-/*  */
+
+#mobileControls button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 24px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#mobileControls button:active {
+    background-color: #555;
+}
+
+#mobileControls div {
+    display: flex;
+}
