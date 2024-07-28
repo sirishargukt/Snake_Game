@@ -5,7 +5,8 @@ body {
     height: 100vh;
     margin: 0;
     background-size: cover;
-    background-color: black;
+/*     background-color: black; */
+    background: url('https://cdn.leonardo.ai/users/1661f459-1b21-478c-9daa-6aa1ef9aac13/generations/2cdfd3dd-ce9c-4300-823e-9242c822ed56/Default_A_nostalgic_snake_gameinspired_laptop_wallpaper_featur_0.jpg') no-repeat center center;
 }
 
 #gameContainer {
