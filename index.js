@@ -4,7 +4,7 @@ const gameCtx = gameCanvas.getContext('2d');
 const displayCtx = displayCanvas.getContext('2d');
 const startMessage = document.getElementById('startMessage');
 
-const boxSize = 20;
+const boxSize = 25;
 const gridWidth = 30;
 const gridHeight = 20;
 
@@ -29,6 +29,26 @@ function init() {
     gameRunning = true;
     startMessage.style.display = 'none';
     requestAnimationFrame(gameLoop);
+    resizeGame();
+    window.addEventListener('resize', resizeGame);
+}
+
+function resizeGame() {
+    const gameAspectRatio = gridWidth / gridHeight;
+    const windowAspectRatio = window.innerWidth / window.innerHeight;
+
+    let newWidth, newHeight;
+
+    if (windowAspectRatio > gameAspectRatio) {
+        newHeight = Math.min(window.innerHeight * 0.8, boxSize * gridHeight);
+        newWidth = newHeight * gameAspectRatio;
+    } else {
+        newWidth = Math.min(window.innerWidth * 0.9, boxSize * gridWidth);
+        newHeight = newWidth / gameAspectRatio;
+    }
+
+    displayCanvas.style.width = `${newWidth}px`;
+    displayCanvas.style.height = `${newHeight}px`;
 }
 
 function placeFood() {
@@ -88,8 +108,9 @@ function draw() {
 
 function gameOver() {
     gameRunning = false;
-    startMessage.innerHTML = 'Game Over! Press Enter to Restart';
+    startMessage.innerHTML = 'Game Over! Press Enter or Restart';
     startMessage.style.display = 'block';
+    startMessage.style.textAlign='center';
 }
 
 let lastTime = 0;
@@ -110,24 +131,55 @@ function gameLoop(currentTime) {
     }
 }
 
-document.addEventListener('keydown', (e) => {
+function handleInput(e) {
     if (e.key === 'Enter' && !gameRunning) {
         init();
     } else if (gameRunning) {
-        switch(e.key) {
-            case 'ArrowUp':
-                if (direction.y === 0) direction = {x: 0, y: -1};
-                break;
-            case 'ArrowDown':
-                if (direction.y === 0) direction = {x: 0, y: 1};
-                break;
-            case 'ArrowLeft':
-                if (direction.x === 0) direction = {x: -1, y: 0};
-                break;
-            case 'ArrowRight':
-                if (direction.x === 0) direction = {x: 1, y: 0};
-                break;
-        }
+        changeDirection(e.key);
+    }
+}
+
+function handleTouch(e) {
+    if (!gameRunning) {
+        init();
+    }
+}
+
+function changeDirection(key) {
+    switch(key) {
+        case 'ArrowUp':
+            if (direction.y === 0) direction = {x: 0, y: -1};
+            break;
+        case 'ArrowDown':
+            if (direction.y === 0) direction = {x: 0, y: 1};
+            break;
+        case 'ArrowLeft':
+            if (direction.x === 0) direction = {x: -1, y: 0};
+            break;
+        case 'ArrowRight':
+            if (direction.x === 0) direction = {x: 1, y: 0};
+            break;
+    }
+}
+
+document.addEventListener('keydown', handleInput);
+document.addEventListener('touchstart', handleTouch);
+
+// Add touch controls for mobile
+const mobileControls = document.getElementById('mobileControls');
+mobileControls.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const button = e.target.closest('button');
+    if (button) {
+        const direction = button.id.replace('Btn', '');
+        changeDirection(`Arrow${direction.charAt(0).toUpperCase() + direction.slice(1)}`);
     }
 });
+
+// Prevent default touch behavior to avoid scrolling while playing
+document.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+}, { passive: false });
+
 draw();
+resizeGame();
