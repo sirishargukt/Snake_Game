@@ -1,0 +1,20 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+#displayCanvas {
+    border: 2px solid #333;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000;
+}
+#startMessage {
+    position: absolute;
+    font-size: 24px;
+    color: white;
+    text-align: center;
+}
